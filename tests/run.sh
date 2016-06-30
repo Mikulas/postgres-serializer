@@ -1,3 +1,6 @@
-#!/bin/sh
-dir=$(cd `dirname $0` && pwd)
-$dir/../vendor/bin/tester -p php -c $dir/php.ini --setup $dir/inc/setup.php "$@"
+#!/usr/bin/env bash
+set -euo pipefail
+IFS=$'\n\t'
+DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+
+"$DIR"/../vendor/nette/tester/Tester/tester -p php "$@"

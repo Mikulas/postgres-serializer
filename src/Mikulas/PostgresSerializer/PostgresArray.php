@@ -1,6 +1,6 @@
 <?php
 
-namespace Mikulas\OrmExt\Pg;
+namespace Mikulas\PostgresSerializer;
 
 use Nette\Utils\Tokenizer;
 use Nette\Utils\TokenizerException;
@@ -20,7 +20,7 @@ use Nette\Utils\TokenizerException;
  *   {{1,2,3},{4,5,6},{7,8,9}}
  * </code>
  */
-class PgArray
+class PostgresArray
 {
 
 	/** @internal */
@@ -41,7 +41,7 @@ class PgArray
 	 * @param bool     $castEmptyToNull
 	 * @return NULL|string
 	 */
-	public static function serialize(array $input = NULL, callable $transform, $castEmptyToNull = FALSE)
+	public static function serialize(array $input = NULL, callable $transform, bool $castEmptyToNull = FALSE)
 	{
 		if ($input === NULL || ($castEmptyToNull && !$input)) {
 			return NULL;
@@ -62,10 +62,10 @@ class PgArray
 
 
 	/**
-	 * @param string   $input
+	 * @param NULL|string $input
 	 * @param callable $transform (mixed $partial) called for each item
 	 * @return array|NULL
-	 * @throws PgArrayException
+	 * @throws PostgresArrayException
 	 */
 	public static function parse($input, callable $transform)
 	{
@@ -85,31 +85,32 @@ class PgArray
 			$tokens = $tokenizer->tokenize($input);
 
 		} catch (TokenizerException $e) {
-			throw PgArrayException::tokenizerFailure($e);
+			throw PostgresArrayException::tokenizerFailure($e);
 		}
 
 		list($value, $offset, $type) = $tokens[0];
 		if ($type !== self::T_OPEN) {
-			throw PgArrayException::openFailed();
+			throw PostgresArrayException::openFailed();
 		}
 
 		list($values, $position) = self::innerParse($tokens, $transform, 1);
 
 		if ($position !== count($tokens)) {
-			throw PgArrayException::mismatchedBrackets();
+			throw PostgresArrayException::mismatchedBrackets();
 		}
 
 		return $values;
 	}
+
 
 	/**
 	 * @param array    $tokens
 	 * @param callable $transform (mixed $partial) called for each item
 	 * @param int      $startPos  1..count($tokens)
 	 * @return array   [array|NULL $value, int $newPosition]
-	 * @throws PgArrayException
+	 * @throws PostgresArrayException
 	 */
-	protected static function innerParse($tokens, callable $transform, $startPos)
+	protected static function innerParse(array $tokens, callable $transform, int $startPos): array
 	{
 		$values = [];
 		$max = count($tokens);
@@ -137,7 +138,7 @@ class PgArray
 				continue;
 
 			} else {
-				throw PgArrayException::malformedInput();
+				throw PostgresArrayException::malformedInput();
 			}
 		}
 		return [$values, $position];

@@ -4,14 +4,13 @@
  * @testCase
  */
 
-namespace Mikulas\OrmExt\Tests\Pg;
+namespace Mikulas\Tests\PostgresSerializer;
 
-use Mikulas\OrmExt\Pg\CompositeType;
-use Mikulas\OrmExt\Tests\TestCase;
-use Mockery;
+use Mikulas\PostgresSerializer\CompositeType;
 use Tester\Assert;
+use Tester\TestCase;
 
-$dic = require_once __DIR__ . '/../../../bootstrap.php';
+$dic = require_once __DIR__ . '/../../bootstrap.php';
 
 
 class CompositeTypeTest extends TestCase

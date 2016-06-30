@@ -1,39 +1,16 @@
 language: php
 php:
-    - 5.6
     - 7.0
-    - hhvm
 addons:
-    postgresql: "9.4"
-
-matrix:
-    fast_finish: true
-    allow_failures:
-      - php: hhvm
+    postgresql: "9.5"
 
 before_script:
     - travis_retry composer self-update --no-interaction
     - travis_retry composer update --no-interaction --prefer-dist
 
-    # Create php.ini
-    - cp ./tests/config.sample.neon ./tests/config.neon
-    - cp ./tests/php-unix.ini ./tests/php.ini
-
-    - if [ "$TRAVIS_PHP_VERSION" == "5.6" ]; then cat ~/.phpenv/versions/$(phpenv version-name)/etc/conf.d/xdebug.ini >> ./tests/php.ini; fi
-    - if [ "$TRAVIS_PHP_VERSION" == "5.6" ]; then NTESTER_FLAGS="--coverage ./coverage.xml --coverage-src ./src"; else TESTER_FLAGS=""; fi
-
-    # Create databases
-    - psql -c 'CREATE DATABASE mikulas_ormext_test' -U postgres
-
-    - mysql_tzinfo_to_sql /usr/share/zoneinfo | mysql -u root mysql
-
     - composer dump-autoload --classmap-authoritative
 
 script: ./tests/run.sh -s $NTESTER_FLAGS ./tests/cases
-
-after_script:
-    - if [ "$TRAVIS_PHP_VERSION" == "5.6" ]; then composer require satooshi/php-coveralls; fi
-    - if [ "$TRAVIS_PHP_VERSION" == "5.6" ]; then php vendor/bin/coveralls -c tests/.coveralls.yml -v; fi
 
 after_failure:
     # Print *.actual content & log content

@@ -1,6 +1,6 @@
 <?php
 
-namespace Mikulas\OrmExt\Pg;
+namespace Mikulas\PostgresSerializer;
 
 use Nette\Utils\Tokenizer;
 use Nette\Utils\TokenizerException;
@@ -29,7 +29,7 @@ class CompositeType
 	 * @param callable $transform (mixed $partial)
 	 * @return string
 	 */
-	public static function serialize(array $input, callable $transform = NULL)
+	public static function serialize(array $input, callable $transform = NULL): string
 	{
 		if ($transform === NULL) {
 			$transform = function($partial) {
@@ -58,11 +58,10 @@ class CompositeType
 
 
 	/**
-	 * @param string $input
 	 * @return array|NULL
 	 * @throws CompositeTypeException
 	 */
-	public static function parse($input)
+	public static function parse(string $input)
 	{
 		if ($input === NULL) {
 			return NULL;
@@ -106,12 +105,9 @@ class CompositeType
 
 
 	/**
-	 * @param string   $input
-	 * @param array    $tokens
-	 * @param int      $startPos
-	 * @return array   [array|NULL $value, int $newPosition]
+	 * @return array [array|NULL $value, int $newPosition]
 	 */
-	protected static function innerParse($input, $tokens, $startPos)
+	protected static function innerParse(string $input, array $tokens, int $startPos): array
 	{
 		$values = [];
 		$max = count($tokens);
@@ -151,24 +147,14 @@ class CompositeType
 	}
 
 
-	/**
-	 * @param bool $value
-	 * @return string
-	 */
-	protected static function escapeBool($value)
+	protected static function escapeBool(bool $value): string
 	{
 		return $value ? 'true' : 'false';
 	}
 
 
-	/**
-	 * @param string $value
-	 * @return string
-	 */
-	protected static function escapeString($value)
+	protected static function escapeString(string $value): string
 	{
-
-
 		return '"' . str_replace('"', '""', $value) . '"';
 	}
 

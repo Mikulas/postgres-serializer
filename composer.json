@@ -1,39 +1,23 @@
 {
-	"name": "mikulas/nextras-ormext",
+	"name": "mikulas/postgres-serializer",
 	"type": "library",
-	"description": "PostgreSQL extensions for Nextras Orm framework DBAL and ORM",
-	"keywords": ["orm", "database", "nextras", "postgresql"],
-	"homepage": "https://github.com/mikulas/nextras-orm-pg",
+	"description": "PostgreSQL serialization and deserialization for arrays and composite types",
+	"keywords": ["postgresql", "pg", "serializer"],
+	"homepage": "https://github.com/mikulas/postgres-serializer",
 	"license": "MIT",
 	"authors": [
-		{ "name": "Nextras Project", "homepage": "https://github.com/nextras/orm/graphs/contributors" }
+		{ "name": "Mikulas Dite" }
 	],
 	"minimum-stability": "stable",
 	"require": {
-		"php": ">=5.6",
-		"nextras/dbal": "dev-master",
-		"nextras/orm": "dev-master",
+		"php": ">=7.0",
 		"nette/tokenizer": "~2.2",
 		"nette/utils": "~2.2"
 	},
-	"suggest": {
-		"ext-mcrypt": "Enables Crypto class and MappingFactory::addCryptoMapping",
-		"yohang/finite": "Enables state machine container property (required version: ~1.1)"
-	},
 	"require-dev": {
-		"tracy/tracy": "~2.3",
-		"nette/bootstrap": "~2.3",
-		"nette/tester": "~1.6 != 1.6.1",
-		"mockery/mockery": "~0.9",
-		"yohang/finite": "~1.1"
+		"nette/tester": "^1.7"
 	},
 	"autoload": {
-		"psr-4": { "Mikulas\\OrmExt\\": "src/" }
-	},
-	"autoload-dev": {
-		"classmap": [
-			"tests/cases",
-			"tests/inc"
-		]
+		"psr-4": { "Mikulas\\PostgresSerializer\\": "src/" }
 	}
 }

@@ -1,8 +1,7 @@
 <?php
 
-namespace Mikulas\OrmExt\Pg;
+namespace Mikulas\PostgresSerializer;
 
-use Mikulas\OrmExt\Exception;
 use Nette\Utils\TokenizerException;
 
 
@@ -28,46 +27,25 @@ class CompositeTypeException extends \InvalidArgumentException implements Except
 	}
 
 
-	/**
-	 * @param string             $input
-	 * @param TokenizerException $e
-	 * @return PgArrayException
-	 */
-	public static function tokenizerFailure($input, TokenizerException $e)
+	public static function tokenizerFailure(string $input, TokenizerException $e): CompositeTypeException
 	{
 		return self::malformedInput($input, 'Failed during tokenization.', $e);
 	}
 
 
-	/**
-	 * @param string          $input
-	 * @param \Exception|NULL $previous
-	 * @return PgArrayException
-	 */
-	public static function openFailed($input, \Exception $previous = NULL)
+	public static function openFailed(string $input, \Exception $previous = NULL): CompositeTypeException
 	{
 		return self::malformedInput($input, "Expected '(' as first token.", $previous);
 	}
 
 
-	/**
-	 * @param string          $input
-	 * @param \Exception|NULL $previous
-	 * @return PgArrayException
-	 */
-	public static function mismatchedParens($input, \Exception $previous = NULL)
+	public static function mismatchedParens(string $input, \Exception $previous = NULL): CompositeTypeException
 	{
 		return self::malformedInput($input, "Expected ')' as last token.", $previous);
 	}
 
 
-	/**
-	 * @param string          $input
-	 * @param string          $reason
-	 * @param \Exception|NULL $previous
-	 * @return PgArrayException
-	 */
-	public static function malformedInput($input, $reason = '', \Exception $previous = NULL)
+	public static function malformedInput(string $input, $reason = '', \Exception $previous = NULL): CompositeTypeException
 	{
 		return new self($input, "Malformed input, expected recursive '( val1 , val2 , ... )' syntax."
 			. ($reason ? " $reason" : ''), $previous);
