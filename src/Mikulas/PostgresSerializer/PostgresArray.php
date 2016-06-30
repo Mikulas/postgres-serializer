@@ -50,7 +50,7 @@ class PostgresArray
 		$values = [];
 		foreach ($input as $partial) {
 			if (is_array($partial)) {
-				$values[] = self::serialize($partial, $transform, $castEmptyToNull);
+				$values[] = self::serialize($partial, $transform, $castEmptyToNull) ?? '{NULL}';
 			} elseif ($partial === NULL) {
 				$values[] = 'NULL'; // unlike in composite types, '{1,,2}' does not work
 			} else {

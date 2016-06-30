@@ -123,6 +123,8 @@ class PostgresArrayTest extends TestCase
 
 		Assert::same('{{1,2},{3,4,5}}', PostgresArray::serialize([[1, 2], [3, 4, 5]], $fromNumber));
 
+		Assert::same('{{NULL}}', PostgresArray::serialize([[]], $fromNumber, TRUE));
+
 		Assert::same(NULL, PostgresArray::serialize([], $fromNumber, TRUE));
 		Assert::same('{}', PostgresArray::serialize([], $fromNumber, FALSE));
 	}
